@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Body
 from fastapi.responses import JSONResponse, Response
 from fastapi.encoders import jsonable_encoder
-from passlib.context import CryptContext
 from typing import List
 
 from models.Usuario import Usuario, ActualizarUsuario
@@ -16,7 +15,8 @@ async def obtener_usuarios():
 
 @usuario.get("/empleados/{num_cedula}", response_description="Empleado obtenido", response_model=Usuario)
 async def obtener_usuario_por_cedula(num_cedula: str):
-    if (usuario := await conn["empleados"].find_one({"num_cedula": num_cedula})) is not None:
+    usuario = await conn["empleados"].find_one({"num_cedula": num_cedula})
+    if usuario is not None:
         return usuario
 
     raise HTTPException(
@@ -47,12 +47,12 @@ async def actualizar_usuario(usuario_id: str, usuario: ActualizarUsuario = Body(
         update_result = await conn["empleados"].update_one({"_id": usuario_id}, {"$set": usuario})
 
         if update_result.modified_count == 1:
-            if (
-                usuario_actualizado := await conn["empleados"].find_one({"_id": usuario_id})
-            ) is not None:
+            usuario_actualizado = await conn["empleados"].find_one({"_id": usuario_id})
+            if usuario_actualizado is not None:
                 return usuario_actualizado
 
-    if (usuario_existente := await conn["empleados"].find_one({"_id": usuario_id})) is not None:
+    usuario_existente = await conn["empleados"].find_one({"_id": usuario_id})
+    if usuario_existente is not None:
         return usuario_existente
 
     raise HTTPException(
