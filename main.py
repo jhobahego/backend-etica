@@ -9,7 +9,7 @@ app.include_router(usuario)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://programa-contable.netlify.app"],
+    allow_origins=["http://localhost:5173", "https://programa-contable.netlify.app","https://main--programa-contable.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
