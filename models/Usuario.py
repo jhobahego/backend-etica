@@ -9,6 +9,8 @@ class Usuario(BaseModel):
     nombres: str
     num_cedula: str
     salario: float
+    pension_descontada: Optional[bool] = Field(default=False)
+    salud_descontada: Optional[bool] = Field(default=False)
 
     class Config:
         allow_population_by_field_name = True
@@ -19,6 +21,8 @@ class Usuario(BaseModel):
                 "nombres": "Jane Doe",
                 "num_cedula": "1015722525",
                 "salario": 1230000.0,
+                "pension_descontada": False,
+                "salud_descontada": True,
             }
         }
 
@@ -27,6 +31,8 @@ class ActualizarUsuario(BaseModel):
     nombres: Optional[str]
     num_cedula: Optional[str]
     salario: Optional[float]
+    pension_descontada: Optional[bool]
+    salud_descontada: Optional[bool]
 
     class Config:
         arbitrary_types_allowed = True
@@ -36,5 +42,7 @@ class ActualizarUsuario(BaseModel):
                 "nombres": "Jane Doe",
                 "num_cedula": "1015722525",
                 "salario": 1230000.0,
+                "pension_descontada": False,
+                "salud_descontada": True,
             }
         }
