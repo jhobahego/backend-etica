@@ -24,3 +24,6 @@ pip install -r requirements.txt
 ```
 uvicorn main:app --reload
 ```
+
+### Notas adicionales
+Agrega el nombre del entorno al .gitignore
