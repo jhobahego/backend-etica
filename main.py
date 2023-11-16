@@ -23,4 +23,4 @@ app.add_middleware(
 
 @app.get("/")
 def home():
-    return "hello world"
+    return RedirectResponse(url="/docs")
