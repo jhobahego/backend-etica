@@ -10,7 +10,7 @@ class PyObjectId(ObjectId):
     def __get_pydantic_core_schema__(
         cls, source_type: Any, handler: GetCoreSchemaHandler
     ) -> CoreSchema:
-        return core_schema.no_info_after_validator_function(cls, handler(ObjectId))
+        return core_schema.no_info_after_validator_function(cls.validate, core_schema.str_schema())
 
     @classmethod
     def validate(cls, v):
@@ -24,6 +24,7 @@ class PyObjectId(ObjectId):
     ) -> JsonSchemaValue:
         json_schema = handler(core_schema)
         json_schema = handler.resolve_ref_schema(json_schema)
-        # Modify the JSON schema as needed
         json_schema["type"] = "string"
+        json_schema["pattern"] = "^[0-9a-fA-F]{24}$"
+        json_schema["description"] = "A valid MongoDB ObjectId"
         return json_schema
