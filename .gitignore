@@ -1,4 +1,6 @@
-backend-etica
+venv
 .env
 .vscode
 .idea
+__pycache__
+*.pyc
