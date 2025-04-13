@@ -29,7 +29,7 @@ async def guardar_usuario(usuario: Usuario = Body(...)):
     if any(u["num_cedula"] == usuario.num_cedula for u in usuarios):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Empleado con esta cedula ya registrado"
+            detail="Empleado con esta cedula ya registrado"
         )
 
     usuario = jsonable_encoder(usuario)
@@ -41,10 +41,10 @@ async def guardar_usuario(usuario: Usuario = Body(...)):
 
 @usuario.put("/empleados/{usuario_id}", response_description="Empleado actualizado", response_model=Usuario)
 async def actualizar_usuario(usuario_id: str, usuario: ActualizarUsuario = Body(...)):
-    usuario = {datos: valor for datos, valor in usuario.dict().items()
-               if valor is not None}
-    if len(usuario) >= 1:
-        update_result = await conn["empleados"].update_one({"_id": usuario_id}, {"$set": usuario})
+    usuario_dict = {datos: valor for datos, valor in usuario.model_dump().items()
+                   if valor is not None}
+    if len(usuario_dict) >= 1:
+        update_result = await conn["empleados"].update_one({"_id": usuario_id}, {"$set": usuario_dict})
 
         if update_result.modified_count == 1:
             usuario_actualizado = await conn["empleados"].find_one({"_id": usuario_id})
