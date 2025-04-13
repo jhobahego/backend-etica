@@ -6,7 +6,7 @@ from models.Id import PyObjectId
 class Usuario(BaseModel):
     usuario_id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     nombres: str
-    num_cedula: str
+    num_cedula: int
     salario: float
     pension_descontada: Optional[bool] = Field(default=False)
     salud_descontada: Optional[bool] = Field(default=False)
