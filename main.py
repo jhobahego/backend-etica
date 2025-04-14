@@ -4,10 +4,12 @@ from fastapi.responses import RedirectResponse
 from decouple import config
 
 from routes.usuarios import usuario
+from routes.auth import auth
 
 app = FastAPI()
 
 app.include_router(usuario)
+app.include_router(auth)
 
 FRONTEND_URL = config("FRONTEND_URL")
 
