@@ -1,6 +1,13 @@
 from typing import Optional
 from pydantic import Field, BaseModel, ConfigDict
+from enum import Enum
+
 from models.Id import PyObjectId
+
+
+class RolesUsuario(str, Enum):
+    USUARIO = "usuario"
+    ADMIN = "admin"
 
 
 class Usuario(BaseModel):
@@ -10,6 +17,8 @@ class Usuario(BaseModel):
     salario: float
     pension_descontada: Optional[bool] = Field(default=False)
     salud_descontada: Optional[bool] = Field(default=False)
+    rol: RolesUsuario = Field(default=RolesUsuario.USUARIO)
+    hashed_password: str
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -21,6 +30,8 @@ class Usuario(BaseModel):
                 "salario": 1230000.0,
                 "pension_descontada": False,
                 "salud_descontada": True,
+                "rol": "usuario",
+                "hashed_password": "password",
             }
         },
     )
@@ -28,7 +39,6 @@ class Usuario(BaseModel):
 
 class ActualizarUsuario(BaseModel):
     nombres: Optional[str] = None
-    num_cedula: Optional[str] = None
     salario: Optional[float] = None
     pension_descontada: Optional[bool] = None
     salud_descontada: Optional[bool] = None
@@ -38,7 +48,6 @@ class ActualizarUsuario(BaseModel):
         json_schema_extra={
             "example": {
                 "nombres": "Jane Doe",
-                "num_cedula": "1015722525",
                 "salario": 1230000.0,
                 "pension_descontada": False,
                 "salud_descontada": True,
